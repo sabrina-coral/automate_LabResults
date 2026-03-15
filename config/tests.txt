@@ -17,7 +17,7 @@ Sodium
 Chlorure, Chloride
 Potassium
 Magnesium, magnésium
-ALT, ALANINE TRANSAMINASE (ALT), alanine transaminase
+ALT, ALANINE TRANSAMINASE (ALT), alanine transaminase, SGPT
 Albumine, albumin
 Calcium
 Calcium corrige, calcium corrected, corrected calcium
@@ -26,41 +26,43 @@ TIBC, tibc
 Saturation du fer, saturation, iron saturation, transferrin saturation
 Ferritine, ferritin
 B12, vitamin b12, vitamine b12, cobalamine
-Vitamine D 25 OH, 25 Vitamin D, Vit-D, 25-HYDROXY VITAMIN D, 25-hydroxyvitamin d, calcidiol
-hs-CRP, high SENSITIVITY crp, crp haute sensibilité, hsCRP
+Vitamine D 25 OH, 25 Vitamin D, Vit-D, 25-HYDROXY VITAMIN D, 25-hydroxyvitamin d, calcidiol, Vitamin D-25 Hydroxy
+hs-CRP, high SENSITIVITY crp, crp haute sensibilité, hsCRP, CRP-hs, C Reactive Protein High Sensitivity
 Protéine C reactive, c-reactive protein, proteine C reactive, CRP
-HbA1c, Hb A1c, hemoglobin a1c, HbAlc, Hb Alc, hemoglobin alc, glycated hemoglobin, hémoglobine glyquée
-Insuline, insulin, insulin fasting, insuline à jeun
-Glucose a jeun, Glucose fasting, Glucose serum fasting, Glucose Sérum à jeun, Glucose Serum a jeun, Glucose Préprandial, glucose
+HbA1c, Hb A1c, hemoglobin a1c, HbAlc, Hb Alc, hemoglobin alc, glycated hemoglobin, hémoglobine glyquée, Hemoglobin A1c
+Insuline, insulin, insulin fasting, insuline à jeun, Fasting Insulin
+Glucose a jeun, Glucose fasting, Glucose serum fasting, Glucose Sérum à jeun, Glucose Serum a jeun, Glucose Préprandial, glucose, Fasting glucose
 Urate, Uric acid, acide urique
-TSH, THYROID STIMULATING HORMONE, thyrotropine
+TSH, THYROID STIMULATING HORMONE, thyrotropine, Thyroid Stimulating Hormone, sTSH, Thyrotropin
 T3 libre, free T3, FT3
-T4 libre, free T4, FT4
+T4 libre, free T4, FT4, Thyroxine
 Anticorps anti-peroxydase thyroïdienne, anti-TPO, TPO antibodies, thyroid peroxidase antibody
 Anticorps des récepteurs de TSH, TSH receptor antibody, TRAb, TRAB
 T3 inverse, reverse T3, rT3
 T3 total, total T3
-Cholesterol, Cholesterol Total, total cholesterol, cholestérol total
+Cholesterol, Cholesterol Total, total cholesterol, cholestérol total, Cholesterol - Total
 Cholesterol LDL (direct), LDL-Cholesterol, LDL Cholesterol, LDL direct
-Cholesterol LDL (calculé), LDL Cholesterol Calc, LDL CHOLESTEROL (CALCULATED), LDL calculé
+Cholesterol LDL (calculé), LDL Cholesterol Calc, LDL CHOLESTEROL (CALCULATED), LDL calculé, LDLc, LDLc (calculated)
 ApoA1, apolipoprotein A1, apolipoprotéine A1, Apo A-I
-Apolipoprotéine B, Apo-B Quantitation, ApoB, apolipoprotein B, Apo B
+Apolipoprotéine B, Apo-B Quantitation, ApoB, apolipoprotein B, Apo B, Apo B (Apolipoprotein B)
 Ratio Apo-B / Apo-A1, ApoB/ApoA1 ratio
-Triglycérides, Triglycerides, TG
+Triglycérides, Triglycerides, TG, Triglycerides (fasting)
 Cholesterol HDL, HDL-Cholesterol, HDL Cholesterol, HDL
+Non-HDL, Non-HDL Cholesterol, Cholesterol non-HDL
 LP(a), lipoprotein a, lipoprotéine a, Lp(a)
 LDLp, LDL particle, LDL-P
-Cortisol, cortisol AM, cortisol matin
+Cortisol, cortisol AM, cortisol matin, Cortisol serum AM, Cortisol (AM)
 Cortisol salive, cortisol salivaire, salivary cortisol
-FSH, follicle stimulating hormone, hormone folliculo-stimulante
-LH, luteinizing hormone, hormone lutéinisante
+FSH, follicle stimulating hormone, hormone folliculo-stimulante, Follicle Stimulating Hormone, Follitropin
+LH, luteinizing hormone, hormone lutéinisante, Luteinizing Hormone, Lutropin
 Progesterone, Progestérone
-Estradiol, oestradiol, E2
-Prolactine, prolactin
-Testosterone libre, Testostérone libre calculée, Testosterone free cal, free testosterone, TESTOSTERONE-FREE, testostérone libre
+Estradiol, oestradiol, E2, Estrogen
+Prolactine, prolactin, Prolactin serum
+Testosterone libre, Testostérone libre calculée, Testosterone free cal, free testosterone, TESTOSTERONE-FREE, testostérone libre, Testosterone Free calculated
 Testosterone, Testostérone LC-MS/MS, Testosterone Total, testostérone totale
-SHBG, sex hormone binding globulin, globuline liant les hormones sexuelles
-DHEA-S, DHEAS, DHEA-sulfate, déhydroépiandrostérone sulfate
+SHBG, sex hormone binding globulin, globuline liant les hormones sexuelles, Sex Hormone Binding Globulin
+DHEA-S, DHEAS, DHEA-sulfate, déhydroépiandrostérone sulfate, Dehydroepiandrosterone-Sulfate
+Beta HCG, bêta HCG, human chorionic gonadotropin, HCG, βHCG, beta-HCG
 IgA, immunoglobuline A
 IgG, immunoglobuline G
 IgA total, IgA totale

@@ -1,14 +1,27 @@
 ---
-# Panel definitions — list the markers expected for each panel type.
-# The system uses these to detect which panel was ordered and flag missing markers.
-# Add your custom panels or nurse-requested panels here.
+# ============================================================
+# Standard Panel Definitions
+# ============================================================
+# These are the actual panels used in practice.
+# The missing marker checker uses these to:
+#   1. Auto-detect which panel was ordered
+#   2. Flag markers expected but not found in the PDF
+#   3. Flag extra markers (nurse-requested, outside standard panels)
+#
+# Panel AB = Panel A + Panel B (full union, handled below)
+# ============================================================
 
 panels:
 
-  CBC:  # Complete Blood Count / FSC (Formule Sanguine Complète)
-    label_en: "Complete Blood Count"
-    label_fr: "Formule sanguine complète"
+  # ──────────────────────────────────────────────────────────
+  # PANEL A
+  # Full metabolic + CBC + thyroid + lipid + hormones (cortisol only)
+  # ──────────────────────────────────────────────────────────
+  PANEL_A:
+    label_en: "Panel A"
+    label_fr: "Panneau A"
     markers:
+      # CBC (ordered as one test — expands to all sub-markers in the PDF)
       - RBC
       - WBC
       - Hemoglobin
@@ -23,107 +36,78 @@ panels:
       - Monocytes
       - Eosinophils
       - Basophils
-
-  LIPID_PANEL:
-    label_en: "Lipid Panel"
-    label_fr: "Bilan lipidique"
-    markers:
-      - Total Cholesterol
-      - LDL Cholesterol
-      - HDL Cholesterol
-      - Triglycerides
-      - ApoA1
-      - ApoB
-      - Lp(a)
-
-  METABOLIC_BASIC:
-    label_en: "Basic Metabolic Panel"
-    label_fr: "Bilan métabolique de base"
-    markers:
+      # Metabolic / renal
       - Creatinine
       - Sodium
       - Potassium
       - Chloride
       - Magnesium
       - Glucose
-      - Albumin
-      - Calcium
-
-  THYROID:
-    label_en: "Thyroid Panel"
-    label_fr: "Bilan thyroïdien"
-    markers:
+      # Liver
+      - ALT
+      # Lipid
+      - Total Cholesterol
+      - LDL Cholesterol
+      - HDL Cholesterol
+      - Non-HDL Cholesterol
+      - Triglycerides
+      - ApoB
+      # Iron / vitamins
+      - Ferritin
+      - Vitamin D 25-OH
+      # Inflammation
+      - hs-CRP
+      # Diabetes / metabolic
+      - HbA1c
+      - Insulin
+      - Uric Acid
+      # Thyroid
       - TSH
       - Free T3
       - Free T4
-      - Reverse T3
-      - Anti-TPO
-      - TRAb
+      # Adrenal
+      - Cortisol AM
 
-  HORMONES_FEMALE:
-    label_en: "Female Hormone Panel"
-    label_fr: "Bilan hormonal féminin"
+  # ──────────────────────────────────────────────────────────
+  # PANEL B
+  # Full hormone panel (reproductive)
+  # ──────────────────────────────────────────────────────────
+  PANEL_B:
+    label_en: "Panel B"
+    label_fr: "Panneau B"
+    markers:
+      - Beta HCG
+      - Testosterone Total
+      - Free Testosterone
+      - SHBG
+      - DHEAS
+      - Prolactin
+      - FSH
+      - LH
+      - Estradiol
+      - Progesterone
+
+  # ──────────────────────────────────────────────────────────
+  # LIGHT PANEL B
+  # Minimal reproductive hormone panel
+  # ──────────────────────────────────────────────────────────
+  PANEL_B_LIGHT:
+    label_en: "Light Panel B"
+    label_fr: "Panneau B léger"
     markers:
       - FSH
       - LH
       - Estradiol
       - Progesterone
-      - Prolactin
-      - Free Testosterone
-      - Testosterone Total
-      - SHBG
-      - DHEAS
 
-  HORMONES_MALE:
-    label_en: "Male Hormone Panel"
-    label_fr: "Bilan hormonal masculin"
+  # ──────────────────────────────────────────────────────────
+  # PANEL AB  (Panel A + Panel B combined)
+  # ──────────────────────────────────────────────────────────
+  PANEL_AB:
+    label_en: "Panel AB"
+    label_fr: "Panneau AB"
     markers:
-      - Testosterone Total
-      - Free Testosterone
-      - SHBG
-      - DHEAS
-      - Estradiol
-      - LH
-      - FSH
-
-  IRON_PANEL:
-    label_en: "Iron Studies"
-    label_fr: "Bilan martial"
-    markers:
-      - Iron
-      - TIBC
-      - Iron Saturation
-      - Ferritin
-
-  INFLAMMATION:
-    label_en: "Inflammation Panel"
-    label_fr: "Bilan inflammatoire"
-    markers:
-      - hs-CRP
-      - C-Reactive Protein
-
-  DIABETES:
-    label_en: "Diabetes Panel"
-    label_fr: "Bilan diabète"
-    markers:
-      - HbA1c
-      - Insulin
-      - Glucose
-
-  CELIAC:
-    label_en: "Celiac Panel"
-    label_fr: "Bilan cœliaque"
-    markers:
-      - IgA
-      - IgG
-      - IgA total
-      - DGP-IgA
-      - DGP-IgG
-
-  FULL_PANEL:
-    label_en: "Full Panel"
-    label_fr: "Bilan complet"
-    markers:
+      # ── All of Panel A ──
       - RBC
       - WBC
       - Hemoglobin
@@ -143,29 +127,32 @@ panels:
       - Potassium
       - Chloride
       - Magnesium
+      - Glucose
       - ALT
-      - Albumin
-      - Calcium
-      - Corrected Calcium
-      - Iron
-      - TIBC
-      - Iron Saturation
+      - Total Cholesterol
+      - LDL Cholesterol
+      - HDL Cholesterol
+      - Non-HDL Cholesterol
+      - Triglycerides
+      - ApoB
       - Ferritin
-      - Vitamin B12
       - Vitamin D 25-OH
       - hs-CRP
-      - C-Reactive Protein
       - HbA1c
       - Insulin
-      - Glucose
       - Uric Acid
       - TSH
       - Free T3
       - Free T4
-      - Total Cholesterol
-      - LDL Cholesterol
-      - HDL Cholesterol
-      - Triglycerides
-      - ApoA1
-      - ApoB
       - Cortisol AM
+      # ── All of Panel B ──
+      - Beta HCG
+      - Testosterone Total
+      - Free Testosterone
+      - SHBG
+      - DHEAS
+      - Prolactin
+      - FSH
+      - LH
+      - Estradiol
+      - Progesterone

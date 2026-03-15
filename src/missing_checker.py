@@ -58,7 +58,13 @@ class MissingChecker:
             patient_name=lab_result.patient.full_name,
         )
 
-        found_names_norm = {_norm(m.raw_name) for m in lab_result.markers}
+        # Build a set of what was found, using matched coral field names where available,
+        # falling back to raw names. This ensures panel comparison works across languages.
+        found_names_norm: set[str] = set()
+        for m in lab_result.markers:
+            found_names_norm.add(_norm(m.raw_name))
+            if m.coral_field_name:
+                found_names_norm.add(_norm(m.coral_field_name))
 
         # --- 1. Markers in PDF not found in coral.app ---
         report.missing_from_coral = [
@@ -86,6 +92,7 @@ class MissingChecker:
             m.raw_name
             for m in lab_result.markers
             if _norm(m.raw_name) not in all_panel_markers_norm
+            and (m.coral_field_name is None or _norm(m.coral_field_name) not in all_panel_markers_norm)
         ]
 
         return report
@@ -114,19 +121,28 @@ class MissingChecker:
         """
         Try to identify which panel was ordered by counting overlap
         between found markers and each panel definition.
+        Uses coral field names (post-matching) for reliable cross-language comparison.
         """
         if not self.panels:
             return None
 
-        found_norm = {_norm(m.raw_name) for m in lab_result.markers}
+        # Use both raw names and matched coral field names
+        found_norm: set[str] = set()
+        for m in lab_result.markers:
+            found_norm.add(_norm(m.raw_name))
+            if m.coral_field_name:
+                found_norm.add(_norm(m.coral_field_name))
+
         best_panel = None
         best_overlap = 0
 
+        # Check more specific panels first (PANEL_AB should rank below PANEL_A+PANEL_B individually)
         for panel_name, expected in self.panels.items():
             expected_norm = {_norm(e) for e in expected}
             overlap = len(found_norm & expected_norm)
-            # Require at least 50% overlap to claim a match
-            if overlap > best_overlap and overlap >= len(expected_norm) * 0.5:
+            # Require at least 60% of expected markers to claim a match
+            threshold = len(expected_norm) * 0.60
+            if overlap > best_overlap and overlap >= threshold:
                 best_overlap = overlap
                 best_panel = panel_name
 

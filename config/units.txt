@@ -2,7 +2,7 @@
 109/L, x109/L, 10*9/L, 10E9/L, x10E9/L, E9/L, ×10⁹/L
 g/L
 fL, fl
-g/L
+g/L, g/dL
 pg
 %
 109/L, x109/L, 10*9/L, 10E9/L, x10E9/L, E9/L, ×10⁹/L
@@ -12,53 +12,59 @@ fL, fl
 109/L, x109/L, 10*9/L, 10E9/L, x10E9/L, E9/L, ×10⁹/L
 109/L, x109/L, 10*9/L, 10E9/L, x10E9/L, E9/L, ×10⁹/L
 109/L, x109/L, 10*9/L, 10E9/L, x10E9/L, E9/L, ×10⁹/L
-umol/L, umol, µmol/L
-mmol/L, mmol
-mmol/L, mmol
-mmol/L, mmol
-mmol/L, mmol
+umol/L, µmol/L
+mmol/L
+mmol/L
+mmol/L
+mmol/L
 U/L, IU/L
 g/L
-mmol/L, mmol
-mmol/L, mmol
-umol/L, umol, µmol/L
-umol/L, umol, µmol/L
-ug/L, µg/L, ng/mL
-pmol/L, pmol
-nmol/L, nmol, ng/mL
-mg/L
-mg/L
+mmol/L
+mmol/L
+umol/L, µmol/L
+umol/L, µmol/L
 %
-pmol/L, pmol
-mmol/L, mmol
-umol/L, umol, µmol/L
-mIU/L, mU/L, uIU/mL
-pmol/L, pmol
-pmol/L, pmol
+ug/L, µg/L, ng/mL, pmol/L
+pmol/L, pg/mL, ng/mL
+nmol/L, ng/mL
+mg/L
+mg/L
+%, mmol/mol
+pmol/L, mIU/L, uIU/mL, µIU/mL
+mmol/L
+umol/L, µmol/L
+mIU/L, uIU/mL, µIU/mL
+pmol/L, pg/mL
+pmol/L, ng/dL
 kU/L, kIU/L, IU/mL
 IU/L, U/L
-pmol/L, pmol
-nmol/L, nmol
-mmol/L, mmol
-mmol/L, mmol
-mmol/L, mmol
+pmol/L, pg/mL
+pmol/L, nmol/L
+mmol/L
+mmol/L
+mmol/L
+mmol/L
 g/L
 g/L
-mmol/L, mmol
-nmol/L, nmol
-nmol/L, nmol
-nmol/L, nmol
-IU/L, U/L
-IU/L, U/L
-nmol/L, nmol
-pmol/L, pmol
-ug/L, µg/L
-pmol/L, pmol
-nmol/L, nmol
-nmol/L, nmol
-umol/L, umol, µmol/L
-U/mL, IU/mL
-U/mL
+mmol/L
+mmol/L
+mmol/L
+nmol/L, mg/dL
+nmol/L
+nmol/L, nmol/mL
+nmol/L
+IU/L, U/L, mIU/L
+IU/L, U/L, mIU/L
+nmol/L, ng/mL
+pmol/L, pg/mL
+ug/L, µg/L, mIU/L
+pmol/L, ng/dL, pg/mL
+nmol/L, ng/mL
+nmol/L
+umol/L, µmol/L
+IU/L, mIU/L, mIU/mL
+g/L
+g/L
 g/L
 U/mL, IU/mL
 U/mL, IU/mL

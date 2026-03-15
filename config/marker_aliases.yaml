@@ -14,42 +14,53 @@ en_synonyms:
     - Red Blood Cells
     - Erythrocytes
     - RBC count
+    - CBC - red blood cell
   Hemoglobin:
     - Hgb
     - Haemoglobin
+    - CBC - hemoglobin
   MCV:
     - Mean Corpuscular Volume
     - Mean Cell Volume
     - VGM
+    - CBC - MCV
   MCHC:
     - Mean Corpuscular Hemoglobin Concentration
     - CGMH
+    - CBC - MCHC
   MCH:
     - Mean Corpuscular Hemoglobin
     - Mean Cell Hemoglobin
+    - CBC - MCH
   RDW-cv:
     - Red Cell Distribution Width
     - RDW CV
     - DVE
+    - CBC - RDW
   Platelets:
     - Platelet count
     - Thrombocytes
     - PLT
+    - CBC - platelets
   MPV:
     - Mean Platelet Volume
     - VPM
+    - CBC - MPV
   Neutrophils:
     - Neutrophil count
     - PMN
     - Granulocytes
+    - CBC - neutrophils
   ALT:
     - Alanine Aminotransferase
+    - Alanine Aminotransferase (ALT, SGPT), serum
     - SGPT
     - Alanine Transaminase
   Albumin:
     - Serum Albumin
   Ferritin:
     - Serum Ferritin
+    - Ferritin, serum
   Vitamin B12:
     - Cobalamin
     - B12
@@ -59,35 +70,53 @@ en_synonyms:
     - Calcidiol
     - 25(OH)D
     - Cholecalciferol
+    - Vitamin D-25 Hydroxy (25-OH), serum
+    - Vitamin D-25 Hydroxy
+    - 25-OH Vitamin D
   hs-CRP:
     - High sensitivity CRP
     - hsCRP
     - CRP hs
+    - CRP-hs (C Reactive Protein - High Sensitivity)
+    - CRP-hs
+    - C-Reactive Protein - High Sensitivity
   HbA1c:
     - Glycated Hemoglobin
     - A1C
     - Glycohemoglobin
+    - Hemoglobin A1c (HbA1c, Glycosylated Hb), whole blood
+    - Hemoglobin A1c
+    - Glycosylated Hemoglobin
   Insulin:
     - Fasting Insulin
     - Serum Insulin
+    - Insulin (Fasting Insulin), serum
+    - Fasting Insulin, serum
   Glucose:
     - Blood Glucose
     - Serum Glucose
     - Fasting Glucose
     - Plasma Glucose
+    - Glucose (Fasting glucose), serum
+    - Glucose, Fasting
   Uric Acid:
     - Urate
     - Serum Uric Acid
+    - Urate (Uric Acid), serum
   TSH:
     - Thyrotropin
     - Thyroid Stimulating Hormone
+    - Thyroid Stimulating Hormone (TSH, sTSH, Thyrotropin), serum
+    - sTSH
   Free T3:
     - FT3
     - Triiodothyronine Free
+    - Free T3 (Triiodothyronine)
   Free T4:
     - FT4
     - Thyroxine Free
     - Thyroxine T4 Free
+    - Free T4 (Thyroxine), serum
   Anti-TPO:
     - Thyroid Peroxidase Antibody
     - TPO Ab
@@ -101,32 +130,82 @@ en_synonyms:
   Total Cholesterol:
     - Cholesterol total
     - Chol total
+    - Cholesterol - Total
   LDL Cholesterol:
     - LDL-C
     - Low Density Lipoprotein
     - LDL Direct
+    - LDLc (calculated)
+    - LDLc calculated
+  Non-HDL Cholesterol:
+    - Non-HDL
+    - Non HDL Cholesterol
+    - Cholesterol non-HDL
   HDL Cholesterol:
     - HDL-C
     - High Density Lipoprotein
+    - HDL
   Triglycerides:
     - TG
     - Triglycérides
+    - Triglycerides (fasting)
+    - Fasting Triglycerides
   ApoA1:
     - Apolipoprotein A-I
     - ApoA-1
   ApoB:
     - Apolipoprotein B
     - Apo-B
+    - Apo B (Apolipoprotein B), serum
+    - Apo B (Apolipoprotein B)
   Lp(a):
     - Lipoprotein(a)
     - LP(a)
   Cortisol AM:
     - Morning Cortisol
     - Serum Cortisol
+    - Cortisol, serum (AM)
+    - Cortisol serum AM
   DHEAS:
     - DHEA Sulfate
     - Dehydroepiandrosterone Sulfate
     - DHEA-S
+    - DHEAS (Dehydroepiandrosterone-Sulfate), serum
+    - Dehydroepiandrosterone-Sulfate
+  Beta HCG:
+    - Human Chorionic Gonadotropin
+    - HCG quantitative
+    - βHCG
+    - Beta HCG quantitative
+  Testosterone Total:
+    - Total Testosterone
+    - Testosterone, serum
+  Free Testosterone:
+    - Testosterone Free
+    - Testosterone - Free, calculated, serum
+    - Testosterone Free calculated
+  FSH:
+    - Follicle Stimulating Hormone
+    - Follicle Stimulating Hormone (FSH, Follitropin), serum
+    - Follitropin
+  LH:
+    - Luteinizing Hormone
+    - Luteinizing Hormone (LH, Lutropin), serum
+    - Lutropin
+  Estradiol:
+    - E2
+    - Estrogen
+    - Estradiol (Estrogen, E2), serum
+  Progesterone:
+    - Progesterone, serum
+  Prolactin:
+    - Prolactin, serum
+  SHBG:
+    - Sex Hormone Binding Globulin
+    - Sex Hormone Binding Globulin (SHBG), serum
+  Creatinine:
+    - Creatinine (with eGFR), serum
+    - Creatinine with eGFR
 
 fr_synonyms:
   GR:
