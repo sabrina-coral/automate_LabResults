@@ -1,0 +1,55 @@
+---
+# ============================================================
+# Lab Results Automation — Settings
+# ============================================================
+# IMPORTANT: Do NOT commit credentials to git.
+# Store your login in a .env file or in your OS keyring.
+# ============================================================
+
+coral:
+  base_url: "https://coralhealth.app"
+  # Login credentials — use environment variables (recommended):
+  #   CORAL_EMAIL=your@email.com
+  #   CORAL_PASSWORD=yourpassword
+  # Or set directly here (NOT recommended for shared repos):
+  email: ""
+  password: ""
+
+  # Selectors for the lab entry form (update these by inspecting coralhealth.app)
+  selectors:
+    search_member_input: "input[placeholder*='Search'], input[type='search']"
+    member_result_item: "[data-testid='member-result'], .member-item, .patient-row"
+    lab_entry_section: "[data-testid='lab-results'], .lab-results-form"
+    first_field: "input[data-test='lab-field-0'], .lab-input:first-child"
+    save_button: "button[type='submit'], button:has-text('Save'), button:has-text('Enregistrer')"
+
+  # How long to wait for page elements (milliseconds)
+  timeout_ms: 10000
+  # Delay between keystrokes (seconds) — increase if connection is slow
+  type_delay: 0.05
+  # Delay between tab presses (seconds)
+  tab_delay: 0.08
+
+ocr:
+  # Tesseract language: 'eng', 'fra', or 'eng+fra' (both, recommended)
+  default_lang: "eng+fra"
+  # DPI for scanned PDF rendering (300 = good quality, 200 = faster)
+  dpi: 300
+  # PSM mode: 6 = assume uniform block of text (good for lab reports)
+  psm: 6
+
+matching:
+  # Minimum Levenshtein/fuzzy score (0-100) to auto-accept a marker name match
+  marker_auto_accept_score: 88
+  # Patient name fuzzy threshold (0-100)
+  patient_name_threshold: 82
+  # Always require confirmation for patient matches below this confidence
+  patient_confirm_below: 0.95
+
+paths:
+  tests_file: "config/tests.txt"
+  units_file: "config/units.txt"
+  panels_file: "config/panels.yaml"
+  marker_aliases_file: "config/marker_aliases.yaml"
+  # Where to save missing marker reports
+  reports_dir: "reports"

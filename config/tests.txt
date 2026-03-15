@@ -1,0 +1,68 @@
+GR, RBC
+GB, WBC
+Hb, HGB, hemoglobin, hémoglobine
+VGM, MCV, rbc indices: mcv
+CHGM, CGMH, MCHC, mchc
+HGM, TGMH, MCH, mch
+DVE, RDW-cv, rdw, rdw-cv
+Plaquettes, platelets, plat, plaq, Platelet Count
+VPM, mpv
+Neutrophiles, Neutrophils, Neutro
+Lymphocytes, Lympho
+Monocytes, Mono
+Eosinophiles, Éosino, EOSINOPHILS, Eosino, eosinophils
+Basophiles, Baso, BASOPHILS, basophils
+Creatinine, créatinine
+Sodium
+Chlorure, Chloride
+Potassium
+Magnesium, magnésium
+ALT, ALANINE TRANSAMINASE (ALT), alanine transaminase
+Albumine, albumin
+Calcium
+Calcium corrige, calcium corrected, corrected calcium
+Fer, iron
+TIBC, tibc
+Saturation du fer, saturation, iron saturation, transferrin saturation
+Ferritine, ferritin
+B12, vitamin b12, vitamine b12, cobalamine
+Vitamine D 25 OH, 25 Vitamin D, Vit-D, 25-HYDROXY VITAMIN D, 25-hydroxyvitamin d, calcidiol
+hs-CRP, high SENSITIVITY crp, crp haute sensibilité, hsCRP
+Protéine C reactive, c-reactive protein, proteine C reactive, CRP
+HbA1c, Hb A1c, hemoglobin a1c, HbAlc, Hb Alc, hemoglobin alc, glycated hemoglobin, hémoglobine glyquée
+Insuline, insulin, insulin fasting, insuline à jeun
+Glucose a jeun, Glucose fasting, Glucose serum fasting, Glucose Sérum à jeun, Glucose Serum a jeun, Glucose Préprandial, glucose
+Urate, Uric acid, acide urique
+TSH, THYROID STIMULATING HORMONE, thyrotropine
+T3 libre, free T3, FT3
+T4 libre, free T4, FT4
+Anticorps anti-peroxydase thyroïdienne, anti-TPO, TPO antibodies, thyroid peroxidase antibody
+Anticorps des récepteurs de TSH, TSH receptor antibody, TRAb, TRAB
+T3 inverse, reverse T3, rT3
+T3 total, total T3
+Cholesterol, Cholesterol Total, total cholesterol, cholestérol total
+Cholesterol LDL (direct), LDL-Cholesterol, LDL Cholesterol, LDL direct
+Cholesterol LDL (calculé), LDL Cholesterol Calc, LDL CHOLESTEROL (CALCULATED), LDL calculé
+ApoA1, apolipoprotein A1, apolipoprotéine A1, Apo A-I
+Apolipoprotéine B, Apo-B Quantitation, ApoB, apolipoprotein B, Apo B
+Ratio Apo-B / Apo-A1, ApoB/ApoA1 ratio
+Triglycérides, Triglycerides, TG
+Cholesterol HDL, HDL-Cholesterol, HDL Cholesterol, HDL
+LP(a), lipoprotein a, lipoprotéine a, Lp(a)
+LDLp, LDL particle, LDL-P
+Cortisol, cortisol AM, cortisol matin
+Cortisol salive, cortisol salivaire, salivary cortisol
+FSH, follicle stimulating hormone, hormone folliculo-stimulante
+LH, luteinizing hormone, hormone lutéinisante
+Progesterone, Progestérone
+Estradiol, oestradiol, E2
+Prolactine, prolactin
+Testosterone libre, Testostérone libre calculée, Testosterone free cal, free testosterone, TESTOSTERONE-FREE, testostérone libre
+Testosterone, Testostérone LC-MS/MS, Testosterone Total, testostérone totale
+SHBG, sex hormone binding globulin, globuline liant les hormones sexuelles
+DHEA-S, DHEAS, DHEA-sulfate, déhydroépiandrostérone sulfate
+IgA, immunoglobuline A
+IgG, immunoglobuline G
+IgA total, IgA totale
+DGP-IgA, deamidated gliadin peptide IgA, peptide gliadine désaminée IgA
+DGP-IgG, deamidated gliadin peptide IgG, peptide gliadine désaminée IgG

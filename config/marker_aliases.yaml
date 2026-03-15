@@ -1,0 +1,269 @@
+---
+# Marker alias dictionary
+# Maps raw names (as OCR'd from PDFs) to the canonical name in tests.txt
+# The system learns and saves new aliases here automatically when you confirm a match.
+#
+# Format:
+#   aliases:
+#     "raw name from pdf": "canonical name in tests.txt"
+#
+# en_synonyms / fr_synonyms: lists of known synonyms per canonical name
+
+en_synonyms:
+  GR:
+    - Red Blood Cells
+    - Erythrocytes
+    - RBC count
+  Hemoglobin:
+    - Hgb
+    - Haemoglobin
+  MCV:
+    - Mean Corpuscular Volume
+    - Mean Cell Volume
+    - VGM
+  MCHC:
+    - Mean Corpuscular Hemoglobin Concentration
+    - CGMH
+  MCH:
+    - Mean Corpuscular Hemoglobin
+    - Mean Cell Hemoglobin
+  RDW-cv:
+    - Red Cell Distribution Width
+    - RDW CV
+    - DVE
+  Platelets:
+    - Platelet count
+    - Thrombocytes
+    - PLT
+  MPV:
+    - Mean Platelet Volume
+    - VPM
+  Neutrophils:
+    - Neutrophil count
+    - PMN
+    - Granulocytes
+  ALT:
+    - Alanine Aminotransferase
+    - SGPT
+    - Alanine Transaminase
+  Albumin:
+    - Serum Albumin
+  Ferritin:
+    - Serum Ferritin
+  Vitamin B12:
+    - Cobalamin
+    - B12
+    - Cyanocobalamin
+  Vitamin D 25-OH:
+    - 25-Hydroxyvitamin D
+    - Calcidiol
+    - 25(OH)D
+    - Cholecalciferol
+  hs-CRP:
+    - High sensitivity CRP
+    - hsCRP
+    - CRP hs
+  HbA1c:
+    - Glycated Hemoglobin
+    - A1C
+    - Glycohemoglobin
+  Insulin:
+    - Fasting Insulin
+    - Serum Insulin
+  Glucose:
+    - Blood Glucose
+    - Serum Glucose
+    - Fasting Glucose
+    - Plasma Glucose
+  Uric Acid:
+    - Urate
+    - Serum Uric Acid
+  TSH:
+    - Thyrotropin
+    - Thyroid Stimulating Hormone
+  Free T3:
+    - FT3
+    - Triiodothyronine Free
+  Free T4:
+    - FT4
+    - Thyroxine Free
+    - Thyroxine T4 Free
+  Anti-TPO:
+    - Thyroid Peroxidase Antibody
+    - TPO Ab
+    - Anti-Thyroid Peroxidase
+  TRAb:
+    - TSH Receptor Antibody
+    - Thyrotropin Receptor Antibody
+  Reverse T3:
+    - rT3
+    - RT3
+  Total Cholesterol:
+    - Cholesterol total
+    - Chol total
+  LDL Cholesterol:
+    - LDL-C
+    - Low Density Lipoprotein
+    - LDL Direct
+  HDL Cholesterol:
+    - HDL-C
+    - High Density Lipoprotein
+  Triglycerides:
+    - TG
+    - Triglycérides
+  ApoA1:
+    - Apolipoprotein A-I
+    - ApoA-1
+  ApoB:
+    - Apolipoprotein B
+    - Apo-B
+  Lp(a):
+    - Lipoprotein(a)
+    - LP(a)
+  Cortisol AM:
+    - Morning Cortisol
+    - Serum Cortisol
+  DHEAS:
+    - DHEA Sulfate
+    - Dehydroepiandrosterone Sulfate
+    - DHEA-S
+
+fr_synonyms:
+  GR:
+    - Globules rouges
+    - Érythrocytes
+    - Hématies
+  Hemoglobin:
+    - Hémoglobine
+    - Hb
+  MCV:
+    - Volume globulaire moyen
+    - VGM
+  MCHC:
+    - Concentration en hémoglobine globulaire moyenne
+    - CHGM
+  MCH:
+    - Teneur en hémoglobine globulaire moyenne
+    - TGMH
+    - HGM
+  RDW-cv:
+    - Distribution des érythrocytes
+    - DVE
+  Platelets:
+    - Plaquettes
+    - Thrombocytes
+  Neutrophils:
+    - Neutrophiles
+    - Granulocytes neutrophiles
+  ALT:
+    - Alanine aminotransférase
+    - ALAT
+  Albumin:
+    - Albumine sérique
+  Ferritin:
+    - Ferritine sérique
+  Vitamin B12:
+    - Vitamine B12
+    - Cobalamide
+  Vitamin D 25-OH:
+    - Vitamine D 25-OH
+    - 25-hydroxyvitamine D
+    - Calcidiol
+  hs-CRP:
+    - Protéine C réactive ultrasensible
+    - CRP haute sensibilité
+  C-Reactive Protein:
+    - Protéine C réactive
+    - PCR
+  HbA1c:
+    - Hémoglobine glyquée
+    - Hémoglobine A1c
+  Insulin:
+    - Insuline
+    - Insuline à jeun
+  Glucose:
+    - Glycémie à jeun
+    - Glucose sérique à jeun
+    - Glucose préprandial
+  Uric Acid:
+    - Acide urique
+    - Urate sérique
+  TSH:
+    - Thyréostimuline
+    - Hormone thyréotrope
+  Free T3:
+    - T3 libre
+    - T3L
+  Free T4:
+    - T4 libre
+    - T4L
+  Anti-TPO:
+    - Anticorps anti-peroxydase thyroïdienne
+    - Anti-TPO
+  TRAb:
+    - Anticorps des récepteurs de TSH
+    - Anti-RTSH
+  Reverse T3:
+    - T3 inverse
+    - T3r
+  Total Cholesterol:
+    - Cholestérol total
+  LDL Cholesterol:
+    - Cholestérol LDL
+    - LDL calculé
+    - LDL direct
+  HDL Cholesterol:
+    - Cholestérol HDL
+  Triglycerides:
+    - Triglycérides
+  ApoA1:
+    - Apolipoprotéine A1
+  ApoB:
+    - Apolipoprotéine B
+  Lp(a):
+    - Lipoprotéine a
+    - LP(a)
+  Cortisol AM:
+    - Cortisol du matin
+    - Cortisol sérique
+  DHEAS:
+    - DHEA-sulfate
+    - Déhydroépiandrostérone sulfate
+  Iron:
+    - Fer sérique
+    - Fer
+  TIBC:
+    - Capacité totale de fixation du fer
+    - CTF
+  Iron Saturation:
+    - Saturation de la transferrine
+    - Saturation du fer
+  Corrected Calcium:
+    - Calcium corrigé
+    - Calcémie corrigée
+  FSH:
+    - Hormone folliculo-stimulante
+  LH:
+    - Hormone lutéinisante
+  Progesterone:
+    - Progestérone
+  Estradiol:
+    - Œstradiol
+    - Oestradiol
+  Prolactin:
+    - Prolactine
+  Free Testosterone:
+    - Testostérone libre
+    - Testostérone libre calculée
+  Testosterone Total:
+    - Testostérone totale
+    - Testostérone LC-MS/MS
+  SHBG:
+    - Globuline liant les hormones sexuelles
+  IgA:
+    - Immunoglobuline A
+  IgG:
+    - Immunoglobuline G
+
+# Runtime-learned aliases (auto-populated when you confirm fuzzy matches)
+aliases: {}

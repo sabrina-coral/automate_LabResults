@@ -1,0 +1,31 @@
+# ── PDF processing ────────────────────────────────────────────────────────────
+pdfplumber>=0.10.0          # native text layer extraction
+pymupdf>=1.23.0             # fast PDF rendering (also used by colleague's script)
+pdf2image>=1.16.0           # convert PDF pages to images for OCR
+pytesseract>=0.3.10         # Python wrapper for Tesseract OCR
+Pillow>=10.0.0              # image processing (required by pdf2image)
+
+# ── Matching ──────────────────────────────────────────────────────────────────
+rapidfuzz>=3.0.0            # fast fuzzy string matching (Levenshtein + token_sort)
+
+# ── Browser automation ────────────────────────────────────────────────────────
+playwright>=1.40.0          # Playwright for coralhealth.app automation
+# After pip install: run `playwright install chromium`
+
+# ── Config & data ─────────────────────────────────────────────────────────────
+PyYAML>=6.0                 # YAML config files
+pydantic>=2.0.0             # optional: data validation (used if you add API layer)
+
+# ── CLI / display ─────────────────────────────────────────────────────────────
+rich>=13.0.0                # pretty terminal output (optional but recommended)
+
+# ── System requirements (install separately) ──────────────────────────────────
+# Tesseract OCR engine:
+#   Ubuntu/Debian: sudo apt-get install tesseract-ocr tesseract-ocr-fra tesseract-ocr-eng
+#   macOS:         brew install tesseract tesseract-lang
+#   Windows:       https://github.com/UB-Mannheim/tesseract/wiki
+#
+# Poppler (required by pdf2image):
+#   Ubuntu/Debian: sudo apt-get install poppler-utils
+#   macOS:         brew install poppler
+#   Windows:       https://github.com/oschwartz10612/poppler-windows

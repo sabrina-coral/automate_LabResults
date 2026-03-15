@@ -1,0 +1,32 @@
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.eggs/
+dist/
+build/
+.venv/
+venv/
+env/
+
+# Credentials — NEVER commit these
+.env
+*.env
+config/credentials.yaml
+
+# Sample data — PDFs may contain patient info
+sample_pdfs/*.pdf
+reports/*.json
+reports/*.csv
+
+# Tesseract
+tessdata/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# IDE
+.vscode/
+.idea/
+*.swp
