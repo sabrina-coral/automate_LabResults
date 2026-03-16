@@ -39,8 +39,10 @@ coral:
     file_upload_input: "input[type='file']"
     file_upload_button: "button:has(svg[data-testid='AttachFileSvgIcon'])"
 
-    # Publish / submit button
-    publish_button: "button:has-text('Publish')"
+    # Publish toggle switch — turned OFF by the automator so entries save as draft.
+    # You review the data and save manually.
+    # Selector confirmed: input[type="checkbox"][role="switch"] aria-checked="true/false"
+    publish_switch: "input[type='checkbox'][role='switch']"
 
   # How long to wait for page elements (milliseconds)
   timeout_ms: 10000

@@ -285,15 +285,32 @@ class CoralAutomator:
                 print(f"    [{idx:02d}] {name}: FAILED ({exc})")
 
     # ------------------------------------------------------------------ #
-    # Publish
+    # Draft / publish switch
     # ------------------------------------------------------------------ #
 
-    def publish(self) -> None:
-        """Click the Publish button to save and publish the lab result entry."""
-        publish_sel = self._s("publish_button", "button:has-text('Publish')")
-        self._page.click(publish_sel, timeout=self.timeout_ms)
-        self._page.wait_for_load_state("networkidle")
-        print("  ✓ Published successfully")
+    def ensure_draft_mode(self) -> None:
+        """
+        Turn OFF the Publish toggle so the entry is saved as a draft.
+
+        The switch is: input[type="checkbox"][role="switch"]
+        When aria-checked="true" the entry will be published on save — we
+        want aria-checked="false" (draft) so you can review before publishing.
+        """
+        page = self._page
+        switch_sel = self._s(
+            "publish_switch",
+            "input[type='checkbox'][role='switch']",
+        )
+        try:
+            switch = page.locator(switch_sel).first
+            if switch.get_attribute("aria-checked") == "true":
+                switch.click()
+                page.wait_for_timeout(300)
+                print("  ✓ Publish toggle turned OFF — entry will save as draft")
+            else:
+                print("  ✓ Publish toggle already OFF — will save as draft")
+        except Exception as exc:
+            print(f"  ⚠ Could not locate publish toggle ({exc}). Check manually.")
 
     # ------------------------------------------------------------------ #
     # High-level flow: full submission for one LabResult
@@ -364,7 +381,13 @@ class CoralAutomator:
         print(f"  Filling {len(items)} field(s)...")
         self.fill_all_fields(items)
 
-        self.publish()
+        self.ensure_draft_mode()
+
+        print()
+        print("  ─────────────────────────────────────────────────────")
+        print("  ✋ Automation complete — please review the data entry.")
+        print("     When ready, click Save manually in the browser.")
+        print("  ─────────────────────────────────────────────────────")
 
     # ------------------------------------------------------------------ #
     # Index map (built from tests.txt by the main pipeline)
