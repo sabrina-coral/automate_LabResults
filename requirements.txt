@@ -16,6 +16,10 @@ playwright>=1.40.0          # Playwright for coralhealth.app automation
 PyYAML>=6.0                 # YAML config files
 pydantic>=2.0.0             # optional: data validation (used if you add API layer)
 
+# ── Web UI ────────────────────────────────────────────────────────────────────
+streamlit>=1.35.0           # web UI (run with: streamlit run app.py)
+pandas>=2.0.0               # dataframe display in Streamlit
+
 # ── CLI / display ─────────────────────────────────────────────────────────────
 rich>=13.0.0                # pretty terminal output (optional but recommended)
 
