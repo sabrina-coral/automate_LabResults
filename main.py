@@ -227,6 +227,12 @@ def process_pdf(
         coral_fields=coral_fields,
         aliases_path=settings.get("paths", {}).get("marker_aliases_file"),
     )
+    # Register all aliases from tests.txt so every synonym on each line is available
+    for aliases in tests:
+        if len(aliases) >= 2:
+            primary = aliases[0]
+            for alias in aliases[1:]:
+                matcher.add_alias(alias, primary)
     matcher.match_all(lab_result.markers)
 
     matched_count = sum(

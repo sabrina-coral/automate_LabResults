@@ -12,6 +12,8 @@ from .base_parser import BaseParser
 
 # Import all available parsers
 from .qc_fr_biron import BironQCParser
+from .qc_fr_dcml import DCMLParser
+from .qc_fr_dynacare import DynacareQCFrParser
 from .qc_fr_mdl import MDLParser
 from .on_en_dynacare import DynacareParser
 from .on_en_lifelabs import LifeLabsParser
@@ -21,11 +23,13 @@ from .generic_fr import GenericFrParser
 # Ordered list — more specific parsers first, generic fallbacks last
 _PARSER_REGISTRY: list[BaseParser] = [
     BironQCParser(),
+    DCMLParser(),           # DCML Montérégie (QC public lab) — before generic FR
+    DynacareQCFrParser(),   # Dynacare QC French — before the English Dynacare parser
     MDLParser(),
     DynacareParser(),
     LifeLabsParser(),
-    GenericFrParser(),    # French fallback
-    GenericEnParser(),    # English fallback
+    GenericFrParser(),      # French fallback
+    GenericEnParser(),      # English fallback
 ]
 
 

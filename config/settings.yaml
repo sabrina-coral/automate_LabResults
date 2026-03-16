@@ -15,13 +15,32 @@ coral:
   email: ""
   password: ""
 
-  # Selectors for the lab entry form (update these by inspecting coralhealth.app)
+  # Selectors confirmed by browser DevTools inspection of coralhealth.app
   selectors:
-    search_member_input: "input[placeholder*='Search'], input[type='search']"
-    member_result_item: "[data-testid='member-result'], .member-item, .patient-row"
-    lab_entry_section: "[data-testid='lab-results'], .lab-results-form"
-    first_field: "input[data-test='lab-field-0'], .lab-input:first-child"
-    save_button: "button[type='submit'], button:has-text('Save'), button:has-text('Enregistrer')"
+    # Member search — MUI DataGrid quick-filter searchbox
+    search_member_input: "input[role='searchbox']"
+
+    # A member row in the data grid — click to navigate to member profile
+    member_row: "div[role='row'][data-rowindex]"
+
+    # "Lab test results" questionnaire link on the member profile page
+    lab_results_link: "a[href*='/questionnaire/']:has-text('Lab test results')"
+
+    # "+" icon button to create a new lab result entry (MuiIconButton-sizeLg)
+    add_new_button: "button.MuiIconButton-sizeLg"
+
+    # Effective date input (data-testid confirmed from inspection)
+    effective_date_input: "div[data-testid='effective-date-input'] input[type='date']"
+
+    # Individual numeric lab field inputs — nth(i) maps to field index in tests.txt
+    lab_field_input: "div[data-testid='freeTextInput'] input"
+
+    # Hidden file input for PDF upload (triggered via the AttachFile icon button)
+    file_upload_input: "input[type='file']"
+    file_upload_button: "button:has(svg[data-testid='AttachFileSvgIcon'])"
+
+    # Publish / submit button
+    publish_button: "button:has-text('Publish')"
 
   # How long to wait for page elements (milliseconds)
   timeout_ms: 10000

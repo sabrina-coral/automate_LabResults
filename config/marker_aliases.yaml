@@ -177,6 +177,9 @@ en_synonyms:
     - HCG quantitative
     - βHCG
     - Beta HCG quantitative
+    - CG QUANTITATIF
+    - Gonadotrophine chorionique quantitatif
+    - Chorionic gonadotropin quantitatif
   Testosterone Total:
     - Total Testosterone
     - Testosterone, serum
@@ -212,6 +215,12 @@ fr_synonyms:
     - Globules rouges
     - Érythrocytes
     - Hématies
+    - ÉRYTHROCYTES
+  GB:
+    - Leucocytes
+    - LEUCOCYTES
+    - Globules blancs
+    - Leucocytes totaux
   Hemoglobin:
     - Hémoglobine
     - Hb
@@ -228,6 +237,8 @@ fr_synonyms:
   RDW-cv:
     - Distribution des érythrocytes
     - DVE
+    - CVGR
+    - CV des globules rouges
   Platelets:
     - Plaquettes
     - Thrombocytes
@@ -257,9 +268,13 @@ fr_synonyms:
   HbA1c:
     - Hémoglobine glyquée
     - Hémoglobine A1c
+    - HBA1C
   Insulin:
     - Insuline
     - Insuline à jeun
+    - INSULINE AC
+    - Insuline AC
+    - Insuline à jeun (AC)
   Glucose:
     - Glycémie à jeun
     - Glucose sérique à jeun
@@ -291,8 +306,18 @@ fr_synonyms:
     - Cholestérol LDL
     - LDL calculé
     - LDL direct
+    - LDL CHOL. CALC
+    - LDL CHOL CALC
+    - LDL Chol calculé
+  Non-HDL Cholesterol:
+    - Cholestérol non-HDL
+    - Non-HDL-C
+    - NON-HDL-C
+    - Cholestérol non HDL
   HDL Cholesterol:
     - Cholestérol HDL
+    - HDL CHOL
+    - Cholesterol HDL
   Triglycerides:
     - Triglycérides
   ApoA1:
@@ -305,6 +330,8 @@ fr_synonyms:
   Cortisol AM:
     - Cortisol du matin
     - Cortisol sérique
+    - CORTISOL AM
+    - Cortisol AM serum
   DHEAS:
     - DHEA-sulfate
     - Déhydroépiandrostérone sulfate
@@ -334,9 +361,13 @@ fr_synonyms:
   Free Testosterone:
     - Testostérone libre
     - Testostérone libre calculée
+    - TESTOS. LIBRE
+    - Testosterone libre calculée
   Testosterone Total:
     - Testostérone totale
     - Testostérone LC-MS/MS
+    - TESTOS. TOTALE
+    - Testostérone totale sérique
   SHBG:
     - Globuline liant les hormones sexuelles
   IgA:

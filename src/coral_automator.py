@@ -1,26 +1,25 @@
 """
 coral.app (coralhealth.app) automation via Playwright.
 
-Based on the observed tab-based navigation pattern:
-- Each test marker has a fixed TAB index position in the lab entry form
-- Navigation: Tab/Shift+Tab to move between fields
-- Values are typed directly into the focused field
+Workflow (mirrors manual steps confirmed by browser inspection):
+  1. Search for member by name using the MUI DataGrid searchbox
+  2. Click the matching member row to open the member profile
+  3. Click the "+" MuiIconButton to create a new lab result entry
+     (or navigate to an existing entry URL for updates)
+  4. Optionally upload the source PDF file
+  5. Set the effective date (collection date from the lab report)
+  6. Fill in each numeric lab value by targeting the Nth freeTextInput field
+     — index N corresponds to the field's position in config/tests.txt
+  7. Click "Publish"
 
-Usage:
-    automator = CoralAutomator(settings)
-    automator.open_browser()
-    automator.login()
-    member_url = automator.find_member(patient)
-    automator.navigate_to_lab_entry(member_url)
-    automator.enter_results(toenter)   # toenter: list of (name, tab_index, value)
-    automator.save()
-    automator.close_browser()
+Selectors are configured in config/settings.yaml under coral.selectors.
+Login is skipped when an active session already exists (cookie-based).
 """
 from __future__ import annotations
 
 import os
 import time
-from dataclasses import dataclass
+from datetime import date
 from typing import Optional
 
 try:
@@ -29,53 +28,61 @@ try:
 except ImportError:
     PLAYWRIGHT_AVAILABLE = False
 
-from .models import CoralMember, LabResult, MarkerResult, MatchStatus
+from .models import LabResult, MarkerResult, MatchStatus
 
+
+# Kept for backward compatibility with main.py imports
+from dataclasses import dataclass
 
 @dataclass
 class EntryItem:
-    """A single value to be entered into coral.app."""
-    marker_name: str      # display name for logging
-    tab_index: int        # 0-based position in the form (from tests.txt order)
-    value: str            # numeric value to type
+    """Deprecated — retained for import compatibility. Use fill_all_fields() instead."""
+    marker_name: str
+    tab_index: int
+    value: str
 
 
 class CoralAutomator:
     """
     Playwright-based automation for coralhealth.app lab result entry.
 
-    Tab navigation mirrors the colleague's pyautogui approach but runs
-    inside a real Playwright browser — more reliable and doesn't require
-    the lab software to be the focused window.
+    Field targeting uses nth-child index matching (not tab key simulation)
+    which is faster and more reliable for a fixed-order React/MUI form.
     """
 
     def __init__(self, settings: dict):
         self.settings = settings
-        self.base_url: str = settings.get("coral", {}).get("base_url", "https://coralhealth.app")
+        coral = settings.get("coral", {})
+        self.base_url: str = coral.get("base_url", "https://coralhealth.app")
         self.email: str = (
-            os.environ.get("CORAL_EMAIL")
-            or settings.get("coral", {}).get("email", "")
+            os.environ.get("CORAL_EMAIL") or coral.get("email", "")
         )
         self.password: str = (
-            os.environ.get("CORAL_PASSWORD")
-            or settings.get("coral", {}).get("password", "")
+            os.environ.get("CORAL_PASSWORD") or coral.get("password", "")
         )
-        self.timeout_ms: int = settings.get("coral", {}).get("timeout_ms", 10000)
-        self.type_delay: float = settings.get("coral", {}).get("type_delay", 0.05)
-        self.tab_delay: float = settings.get("coral", {}).get("tab_delay", 0.08)
+        self.timeout_ms: int = coral.get("timeout_ms", 10000)
+        self.type_delay: int = int(coral.get("type_delay", 0.05) * 1000)
+        self._sel: dict = coral.get("selectors", {})
 
         self._playwright = None
         self._browser: Optional[Browser] = None
         self._context: Optional[BrowserContext] = None
         self._page: Optional[Page] = None
-        self._current_tab_index: int = 0
+        self._test_index_map: dict[str, int] = {}
+
+    # ------------------------------------------------------------------ #
+    # Selectors (with fallbacks if settings key is missing)
+    # ------------------------------------------------------------------ #
+
+    def _s(self, key: str, fallback: str) -> str:
+        return self._sel.get(key, fallback)
 
     # ------------------------------------------------------------------ #
     # Lifecycle
     # ------------------------------------------------------------------ #
 
     def open_browser(self, headless: bool = False) -> None:
-        """Launch Playwright browser. headless=False lets you watch (recommended)."""
+        """Launch Playwright Chromium. headless=False shows the browser (recommended)."""
         if not PLAYWRIGHT_AVAILABLE:
             raise RuntimeError(
                 "Playwright is not installed.\n"
@@ -95,203 +102,277 @@ class CoralAutomator:
             self._playwright.stop()
 
     # ------------------------------------------------------------------ #
-    # Login
+    # Session / login
     # ------------------------------------------------------------------ #
 
-    def login(self) -> None:
-        """Log in to coralhealth.app."""
+    def ensure_logged_in(self) -> None:
+        """
+        Check if there is already an active session.
+        If not (e.g. session expired), attempt login.
+        Called automatically before any navigation step.
+        """
+        page = self._page
+        page.goto(f"{self.base_url}/members", timeout=self.timeout_ms)
+        page.wait_for_load_state("networkidle")
+
+        # If redirected to /login, we need to authenticate
+        if "/login" in page.url or "/sign-in" in page.url:
+            print("  Session not active — logging in...")
+            self._do_login()
+        else:
+            print("  Active session detected — skipping login.")
+
+    def _do_login(self) -> None:
+        """Perform the actual login flow."""
         if not self.email or not self.password:
             raise ValueError(
                 "Coral credentials not set. "
-                "Set CORAL_EMAIL and CORAL_PASSWORD environment variables."
+                "Set CORAL_EMAIL and CORAL_PASSWORD environment variables "
+                "or fill in config/settings.yaml."
             )
         page = self._page
-        page.goto(f"{self.base_url}/login", timeout=self.timeout_ms)
-        page.wait_for_load_state("networkidle")
-
-        # Try common login field selectors
         page.fill("input[type='email'], input[name='email']", self.email)
         page.fill("input[type='password'], input[name='password']", self.password)
-        page.click("button[type='submit'], button:has-text('Sign in'), button:has-text('Connexion')")
+        page.click(
+            "button[type='submit'], button:has-text('Sign in'), "
+            "button:has-text('Connexion'), button:has-text('Log in')"
+        )
         page.wait_for_load_state("networkidle")
+        if "/login" in page.url or "/sign-in" in page.url:
+            raise RuntimeError("Login failed — check CORAL_EMAIL / CORAL_PASSWORD.")
+        print("  Login successful.")
 
     # ------------------------------------------------------------------ #
     # Member search
     # ------------------------------------------------------------------ #
 
-    def find_member(self, full_name: str) -> Optional[str]:
+    def find_member_url(self, full_name: str) -> Optional[str]:
         """
         Search for a member by name and return their profile URL.
-        Returns None if not found; raises if multiple matches.
+        Returns None if not found.  Raises if multiple matches are ambiguous.
         """
         page = self._page
-        selectors = self.settings.get("coral", {}).get("selectors", {})
+        search_sel = self._s("search_member_input", "input[role='searchbox']")
 
-        # Navigate to member search
-        page.goto(f"{self.base_url}/members", timeout=self.timeout_ms)
-        page.wait_for_load_state("networkidle")
-
-        search_sel = selectors.get("search_member_input", "input[type='search']")
+        # Clear and type the search term
+        page.fill(search_sel, "")
         page.fill(search_sel, full_name)
-        page.wait_for_timeout(800)  # wait for search results to load
+        page.wait_for_timeout(1000)   # let the DataGrid filter update
 
-        result_sel = selectors.get("member_result_item", ".member-item")
-        results = page.query_selector_all(result_sel)
+        # Look for member row links (href contains /members/)
+        link_sel = "a[href*='/members/']"
+        links = page.query_selector_all(link_sel)
 
-        if not results:
+        if not links:
             return None
-        if len(results) == 1:
-            href = results[0].get_attribute("href")
-            if href:
-                return f"{self.base_url}{href}" if href.startswith("/") else href
-            results[0].click()
-            page.wait_for_load_state("networkidle")
-            return page.url
 
-        # Multiple matches — return list of names for the caller to handle
-        names = [r.inner_text().strip() for r in results]
-        raise ValueError(
-            f"Multiple members match '{full_name}': {names}\n"
-            "Please specify the member more precisely."
-        )
+        # Filter to links that contain the name (case-insensitive)
+        name_lower = full_name.lower()
+        matched = [
+            lnk for lnk in links
+            if name_lower.split()[0].lower() in (lnk.inner_text() or "").lower()
+            or name_lower.split()[-1].lower() in (lnk.inner_text() or "").lower()
+        ]
+        if not matched:
+            matched = links  # fall back to first result
 
-    def navigate_to_lab_entry(self, member_url: str) -> None:
-        """Go to the lab results entry page for a member."""
+        href = matched[0].get_attribute("href") or ""
+        if href.startswith("/"):
+            return f"{self.base_url}{href}"
+        return href or None
+
+    def navigate_to_member(self, member_url: str) -> None:
+        """Navigate to a member's profile page."""
+        self._page.goto(member_url, timeout=self.timeout_ms)
+        self._page.wait_for_load_state("networkidle")
+
+    # ------------------------------------------------------------------ #
+    # Creating / opening a lab result entry
+    # ------------------------------------------------------------------ #
+
+    def click_add_new_lab_result(self) -> None:
+        """
+        Click the "+" button to create a new lab result questionnaire entry.
+        The button is a MuiIconButton-sizeLg in the content area.
+        """
         page = self._page
-        page.goto(member_url, timeout=self.timeout_ms)
+        add_sel = self._s("add_new_button", "button.MuiIconButton-sizeLg")
+        page.click(add_sel, timeout=self.timeout_ms)
         page.wait_for_load_state("networkidle")
 
-        # Find and click the lab entry section / button
-        selectors = self.settings.get("coral", {}).get("selectors", {})
-        lab_sel = selectors.get("lab_entry_section", ".lab-results-form")
+    def navigate_to_lab_entry_url(self, entry_url: str) -> None:
+        """Navigate directly to an existing lab result entry URL (for updates)."""
+        self._page.goto(entry_url, timeout=self.timeout_ms)
+        self._page.wait_for_load_state("networkidle")
+
+    # ------------------------------------------------------------------ #
+    # File upload
+    # ------------------------------------------------------------------ #
+
+    def upload_pdf(self, pdf_path: str) -> None:
+        """
+        Upload the source PDF to the lab result entry.
+        The file input is hidden; we trigger it via the AttachFile button.
+        """
+        page = self._page
+        upload_button_sel = self._s(
+            "file_upload_button",
+            "button:has(svg[data-testid='AttachFileSvgIcon'])",
+        )
+        file_input_sel = self._s("file_upload_input", "input[type='file']")
 
         try:
-            page.click(lab_sel, timeout=self.timeout_ms)
-        except Exception:
-            # May already be on the right page; proceed
-            pass
-        page.wait_for_load_state("networkidle")
+            # Some apps expose a hidden file input that we can target directly
+            file_input = page.query_selector(file_input_sel)
+            if file_input:
+                file_input.set_input_files(pdf_path)
+            else:
+                # Click the attach button, then handle the file chooser dialog
+                with page.expect_file_chooser() as fc_info:
+                    page.click(upload_button_sel, timeout=self.timeout_ms)
+                fc_info.value.set_files(pdf_path)
+            page.wait_for_load_state("networkidle")
+            print(f"  ✓ Uploaded: {pdf_path}")
+        except Exception as exc:
+            print(f"  ⚠ PDF upload failed ({exc}). Continuing without upload.")
 
     # ------------------------------------------------------------------ #
-    # Data entry (tab-based navigation, same as colleague's approach)
+    # Setting the effective date
     # ------------------------------------------------------------------ #
 
-    def focus_first_field(self) -> None:
-        """Click / focus the first lab entry field in the form."""
-        selectors = self.settings.get("coral", {}).get("selectors", {})
-        first_sel = selectors.get("first_field", ".lab-input:first-child")
-        self._page.click(first_sel, timeout=self.timeout_ms)
-        self._current_tab_index = 0
-
-    def _tab_to(self, target_index: int) -> None:
+    def set_effective_date(self, collection_date: date) -> None:
         """
-        Navigate to the field at target_index by pressing Tab or Shift+Tab.
-        Mirrors the colleague's moveup/movedown logic but via Playwright keyboard.
+        Set the effective date field to the lab collection date.
+        The input is: div[data-testid='effective-date-input'] input[type='date']
+        Expects ISO format YYYY-MM-DD.
         """
         page = self._page
-        while self._current_tab_index != target_index:
-            if self._current_tab_index < target_index:
-                page.keyboard.press("Tab")
-                self._current_tab_index += 1
-            else:
-                page.keyboard.press("Shift+Tab")
-                self._current_tab_index -= 1
-            time.sleep(self.tab_delay)
-
-    def enter_results(self, items: list[EntryItem]) -> None:
-        """
-        Enter a list of lab values into the form using tab navigation.
-
-        Args:
-            items: list of EntryItem, sorted by tab_index for efficiency
-        """
-        # Sort by tab_index so we always move forward when possible
-        sorted_items = sorted(items, key=lambda x: x.tab_index)
-
-        self.focus_first_field()
-
-        for item in sorted_items:
-            print(f"  → Entering {item.marker_name}: {item.value}")
-            self._tab_to(item.tab_index)
-            # Clear existing value and type new one
-            self._page.keyboard.press("Control+a")
-            self._page.keyboard.type(item.value, delay=int(self.type_delay * 1000))
-            time.sleep(0.05)
-
-    def save(self) -> None:
-        """Click the Save button."""
-        selectors = self.settings.get("coral", {}).get("selectors", {})
-        save_sel = selectors.get(
-            "save_button",
-            "button[type='submit'], button:has-text('Save'), button:has-text('Enregistrer')"
+        date_sel = self._s(
+            "effective_date_input",
+            "div[data-testid='effective-date-input'] input[type='date']",
         )
-        self._page.click(save_sel, timeout=self.timeout_ms)
-        self._page.wait_for_load_state("networkidle")
-        print("  ✓ Saved successfully")
+        iso_date = collection_date.strftime("%Y-%m-%d")
+        page.fill(date_sel, iso_date, timeout=self.timeout_ms)
+        print(f"  ✓ Effective date set to {iso_date}")
 
     # ------------------------------------------------------------------ #
-    # High-level helper: full flow for one LabResult
+    # Filling lab values
+    # ------------------------------------------------------------------ #
+
+    def fill_field(self, field_index: int, value: str) -> None:
+        """
+        Fill a single lab field by its 0-based index in the form.
+        Uses nth(index) on 'div[data-testid=freeTextInput] input'.
+        """
+        field_sel = self._s("lab_field_input", "div[data-testid='freeTextInput'] input")
+        locator = self._page.locator(field_sel).nth(field_index)
+        locator.fill("", timeout=self.timeout_ms)
+        locator.fill(value, timeout=self.timeout_ms)
+
+    def fill_all_fields(self, items: list[tuple[int, str, str]]) -> None:
+        """
+        Fill multiple lab fields.
+
+        Args:
+            items: list of (field_index, field_name, value)
+        """
+        for idx, name, value in sorted(items, key=lambda x: x[0]):
+            try:
+                self.fill_field(idx, value)
+                print(f"    [{idx:02d}] {name}: {value}")
+                time.sleep(0.05)
+            except Exception as exc:
+                print(f"    [{idx:02d}] {name}: FAILED ({exc})")
+
+    # ------------------------------------------------------------------ #
+    # Publish
+    # ------------------------------------------------------------------ #
+
+    def publish(self) -> None:
+        """Click the Publish button to save and publish the lab result entry."""
+        publish_sel = self._s("publish_button", "button:has-text('Publish')")
+        self._page.click(publish_sel, timeout=self.timeout_ms)
+        self._page.wait_for_load_state("networkidle")
+        print("  ✓ Published successfully")
+
+    # ------------------------------------------------------------------ #
+    # High-level flow: full submission for one LabResult
     # ------------------------------------------------------------------ #
 
     def submit_lab_result(
         self,
         lab_result: LabResult,
         member_url: str,
+        pdf_path: Optional[str] = None,
+        entry_url: Optional[str] = None,
         dry_run: bool = True,
     ) -> None:
         """
         Full automated entry for a LabResult into coral.app.
 
         Args:
-            lab_result: parsed and matched LabResult
-            member_url: coral.app URL for the patient's member page
-            dry_run: if True, print actions but don't actually click/type
+            lab_result:  parsed and matched LabResult
+            member_url:  coral.app URL for the patient's member page
+            pdf_path:    path to the source PDF (uploaded for the record)
+            entry_url:   if set, navigate to this existing entry (for updates)
+                         instead of creating a new one
+            dry_run:     if True, print planned actions but do nothing
         """
-        matched = [
-            m for m in lab_result.markers
-            if m.match_status in (MatchStatus.EXACT, MatchStatus.FUZZY)
-            and m.is_numeric
-            and m.coral_field_name is not None
-        ]
+        # Collect matched numeric markers with a known field index
+        items: list[tuple[int, str, str]] = []
+        for m in lab_result.markers:
+            if m.match_status not in (MatchStatus.EXACT, MatchStatus.FUZZY):
+                continue
+            if not m.is_numeric or m.coral_field_name is None:
+                continue
+            idx = self._test_index_map.get(m.coral_field_name.lower())
+            if idx is None:
+                print(f"  ⚠ No field index for '{m.coral_field_name}' — skipping")
+                continue
+            items.append((idx, m.coral_field_name, str(m.numeric_value)))
 
-        if not matched:
-            print("  No matched markers to enter.")
+        if not items:
+            print("  No matched numeric markers to enter.")
             return
-
-        # Build EntryItem list using tab_index from coral_field_name lookup
-        items = []
-        for m in matched:
-            idx = self._field_name_to_tab_index(m.coral_field_name)
-            if idx is not None:
-                items.append(EntryItem(
-                    marker_name=m.coral_field_name,
-                    tab_index=idx,
-                    value=str(m.numeric_value),
-                ))
-            else:
-                print(f"  Warning: no tab index for '{m.coral_field_name}' — skipping")
 
         if dry_run:
-            print(f"\n  [DRY RUN] Would enter {len(items)} values:")
-            for item in sorted(items, key=lambda x: x.tab_index):
-                print(f"    [{item.tab_index:02d}] {item.marker_name}: {item.value}")
+            print(f"\n  [DRY RUN] Would enter {len(items)} value(s):")
+            for idx, name, value in sorted(items):
+                print(f"    [{idx:02d}] {name}: {value}")
+            if lab_result.collection_date:
+                print(f"    Effective date: {lab_result.collection_date}")
+            if pdf_path:
+                print(f"    PDF upload: {pdf_path}")
             return
 
-        self.navigate_to_lab_entry(member_url)
-        self.enter_results(items)
-        self.save()
+        # --- Live mode ---
+        if entry_url:
+            print(f"  Navigating to existing entry: {entry_url}")
+            self.navigate_to_lab_entry_url(entry_url)
+        else:
+            print(f"  Navigating to member: {member_url}")
+            self.navigate_to_member(member_url)
+            print("  Clicking '+' to create new lab result entry...")
+            self.click_add_new_lab_result()
 
-    def _field_name_to_tab_index(self, field_name: str) -> Optional[int]:
-        """
-        Convert a coral.app field name to its tab index.
-        The tab index is derived from the position in tests.txt.
-        Must be set via set_test_index_map() before calling.
-        """
-        return self._test_index_map.get(field_name.lower())
+        if pdf_path:
+            self.upload_pdf(pdf_path)
+
+        if lab_result.collection_date:
+            self.set_effective_date(lab_result.collection_date)
+
+        print(f"  Filling {len(items)} field(s)...")
+        self.fill_all_fields(items)
+
+        self.publish()
+
+    # ------------------------------------------------------------------ #
+    # Index map (built from tests.txt by the main pipeline)
+    # ------------------------------------------------------------------ #
 
     def set_test_index_map(self, test_index_map: dict[str, int]) -> None:
         """
-        Provide the mapping from normalised field names to tab indices.
-        Built from tests.txt by the main pipeline.
+        Provide the mapping from normalised field names → 0-based form index.
+        Built from tests.txt by the main pipeline (first alias = canonical name).
         """
-        self._test_index_map: dict[str, int] = {k.lower(): v for k, v in test_index_map.items()}
+        self._test_index_map = {k.lower(): v for k, v in test_index_map.items()}
