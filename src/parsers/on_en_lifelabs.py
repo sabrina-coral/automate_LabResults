@@ -16,6 +16,7 @@ class LifeLabsParser(BaseParser):
     language = "en"
     lab_name_hint = "LifeLabs"
 
+    # LifeLabs digital format (2+ spaces): "Hemoglobin  142  g/L  120-160"
     _MARKER_LINE_RE = re.compile(
         r"^(?P<name>[A-Za-z][\w\s\(\),\-\/\.]+?)"
         r"\s{2,}"
@@ -23,6 +24,20 @@ class LifeLabsParser(BaseParser):
         r"\s*(?P<flag>[HhLlCc\*]+)?"
         r"\s*(?P<unit>[\w/\.\^\%µ]+)?"
         r"\s*(?P<ref>[\d.,<>\-\s]+)?$",
+    )
+
+    # LifeLabs OCR/fax format (single-space, col order: value → ref → unit → flag):
+    # "Hemoglobin 126 115--155 g/L VRL"
+    # "ALT 11 <36 U/L VRL"
+    # "PROGESTERONE 0.7 nmol/L VRL"
+    _OCR_MARKER_LINE_RE = re.compile(
+        r"^(?P<name>[A-Za-z][A-Za-z\s\-\/\(\),\.]+?)"
+        r"\s+"
+        r"(?P<value>[<>]?\d+\.?\d*)"
+        r"(?:\s+(?P<ref>(?:[\d.,]+--[\d.,]+|[\d.,]+\s*-\s*[\d.,]+|[<>=]+\s*[\d.,]+)))?"
+        r"(?:\s+(?P<unit>[a-zA-Z/%µ][/\w\.\^\%µ]*))?"
+        r"(?:\s+(?P<flag>[A-Z]{2,}))?"
+        r"\s*$",
     )
 
     _NAME_RE = re.compile(r"(?:Patient|Name)\s*:\s*([A-Za-z,\s\-']+)", re.IGNORECASE)
@@ -92,7 +107,7 @@ class LifeLabsParser(BaseParser):
             line = line.strip()
             if not line or len(line) < 5:
                 continue
-            m = self._MARKER_LINE_RE.match(line)
+            m = self._MARKER_LINE_RE.match(line) or self._OCR_MARKER_LINE_RE.match(line)
             if m:
                 name = self._normalise_name(m.group("name"))
                 value = m.group("value").replace(" ", "").replace(",", ".")
